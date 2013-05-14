@@ -1,6 +1,7 @@
 require "muggy/version"
 require 'socket'
 require 'pathname'
+require 'fog'
 
 
 module Muggy
@@ -160,7 +161,7 @@ module Muggy
     end
 
     def cfn_for_region(region)
-      Fog::AWS::CloudFormation.new(region: formal_region(region).tapp, use_iam_profile: use_iam?)
+      Fog::AWS::CloudFormation.new(region: formal_region(region), use_iam_profile: use_iam?)
     end
 
 
@@ -245,12 +246,15 @@ module Muggy
 
 
     def has_ec2_mac?
-      arp = Pathanme("/proc/net/arp")
-      arp.exist? && arp.read[/fe:ff:ff:ff:ff:ff.*eth0/]
+      arp = "/proc/net/arp"
+      File.exist?(arp) && File.read(arp)[/fe:ff:ff:ff:ff:ff.*eth0/]
     end
   end
 
 
   include Services
   include EC2
+
+
+  extend self
 end
