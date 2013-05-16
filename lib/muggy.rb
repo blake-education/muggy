@@ -76,7 +76,8 @@ module Muggy
     'sydney'             => 'sydney',
     'virginia'           => 'virginia',
   }
-  def informal_region(region)
+  def informal_region(region=nil)
+    region ||= self.region
     INFORMAL_REGIONS[region.to_s]
   end
 
