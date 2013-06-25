@@ -32,6 +32,15 @@ module Muggy
     end
 
 
+    def auto_scaling
+      @auto_scaling ||= auto_scaling_for_region(Muggy.region)
+    end
+
+    def auto_scaling_for_region(region)
+      ::AWS::AutoScaling.new(sdk_config(region: Muggy.formal_region(region)))
+    end
+
+
 
     def sdk_config(extra={})
       base_config.merge(extra)
