@@ -7,8 +7,11 @@ module Muggy
 
 
     def reset_services!
-      @ec2 = nil
+      @auto_scaling = nil
       @cfn = nil
+      @ec2 = nil
+      @s3 = nil
+
       @base_config = nil
     end
 
@@ -38,6 +41,15 @@ module Muggy
 
     def auto_scaling_for_region(region)
       ::AWS::AutoScaling.new(sdk_config(region: Muggy.formal_region(region)))
+    end
+
+
+    def s3
+      @s3 ||= s3_for_region(Muggy.region)
+    end
+
+    def s3_for_region(region)
+      ::AWS::S3.new(sdk_config(region: Muggy.formal_region(region)))
     end
 
 
