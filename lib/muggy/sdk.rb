@@ -49,8 +49,7 @@ module Muggy
 
     def base_config
       @base_config ||= if Muggy.use_iam?
-        {}
-
+                         {credential_provider: AWS::Core::CredentialProviders::EC2Provider.new}
       # try to use .fog
       else
         fog_rc = File.expand_path(ENV['FOG_RC'] || "~/.fog")
