@@ -89,8 +89,11 @@ module Muggy
 
   def is_ec2?
     unless instance_variable_defined?(:@is_ec2).tapp(:ec2_defined?)
-      @is_ec2 = !!%x{/bin/hostname -d}.tapp(:hostname_says)[/\.compute\.internal$/].tapp(:match_was)
+      hostname = %x{/bin/hostname -d}.chomp.tapp(:hostname_was)
+
+      @is_ec2 = !! hostname[/\.compute\.internal$/].tapp(:match_was)
     end
+
     @is_ec2
   end
 
