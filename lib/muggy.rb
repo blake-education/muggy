@@ -96,18 +96,24 @@ module Muggy
 
 
   def use_iam?
-    @use_iam ||= begin
-                   return false if ENV['FOG_RC']
-
-                   case ENV["USE_IAM"]
-                   when "no" # no forces off
+    unless instance_variable_defined?(:@use_iam)
+      @use_iam = begin
+                   if ENV['FOG_RC']
                      false
-                   when nil # not set - determine from env
-                     is_ec2?
-                   else # otherwise force true
-                     true
+                   else
+                     case ENV["USE_IAM"]
+                     when "no" # no forces off
+                       false
+                     when nil # not set - determine from env
+                       is_ec2?
+                     else # otherwise force true
+                       true
+                     end
                    end
                  end
+    end
+
+    @use_iam
   end
 
 
