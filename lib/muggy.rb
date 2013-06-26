@@ -88,7 +88,10 @@ module Muggy
 
 
   def is_ec2?
-    @is_ec2 ||= Muggy::EC2.has_ec2_mac? && Muggy::EC2.can_metadata_connect?
+    unless instance_variable_defined?(:@is_ec2)
+      @is_ec2 = !!%x{/bin/hostname -d}[/\.compute\.internal$/]
+    end
+    @is_ec2
   end
 
 
