@@ -88,10 +88,8 @@ module Muggy
 
 
   def is_ec2?
-    unless instance_variable_defined?(:@is_ec2).tapp(:ec2_defined?)
-      hostname = %x{/bin/hostname -d}.chomp.tapp(:hostname_was)
-
-      @is_ec2 = !! hostname[/\.compute\.internal$/].tapp(:match_was)
+    unless instance_variable_defined?(:@is_ec2)
+      @is_ec2 = Muggy::EC2.can_metadata_connect?
     end
 
     @is_ec2
