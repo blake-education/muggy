@@ -8,6 +8,10 @@ module Muggy
   autoload :Sdk, "muggy/sdk"
   autoload :EC2, "muggy/ec2"
 
+  module Support
+    autoload :Memoisation, "muggy/support/memoisation"
+  end
+
 
   ## formal regions
 
