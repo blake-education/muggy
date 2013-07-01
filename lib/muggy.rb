@@ -91,7 +91,27 @@ module Muggy
   end
 
 
+  # we could look these up, but they hardly ever change
+  # so lets just put them here
+  # TODO flesh out
+  AVAILABILITY_ZONES = {
+    'us-east-1' => ('a'..'e'),
+    'us-west-2' => ('a'..'c'),
+    'ap-southeast-2' => ('a'..'b'),
+  }.inject({}) {|zones,(name,azs)|
+    zones[name] = azs.map {|az| "#{name}#{az}"}
+    zones
+  }.freeze
+
+  def availability_zones(region=self.formal_region)
+    AVAILABILITY_ZONES[region]
+  end
+
+
+
+
   def is_ec2?
+    # TODO threadsafe
     unless instance_variable_defined?(:@is_ec2)
       @is_ec2 = Muggy::EC2.can_metadata_connect?
     end
