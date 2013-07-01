@@ -10,8 +10,10 @@ module Muggy
     def reset_services!
       %w{auto_scaling
         cfn
+        cloud_watch
         ec2
         elb
+        r53
         s3
         base_config
       }.each do |key|
@@ -76,10 +78,28 @@ module Muggy
     end
 
 
+    memoised :cloud_watch
+    def cloud_watch!
+      cloud_watch_for_region(Muggy.region)
+    end
+
+    def cloud_watch_for_region(region)
+      ::AWS::CloudWatch.new(sdk_config(region: Muggy.formal_region(region)))
+    end
+
+
+
+    memoised :r53
+    def r53!
+      ::AWS::Route53.new(sdk_config())
+    end
+
 
     def sdk_config(extra={})
       base_config.merge(extra)
     end
+
+
 
 
     memoised :base_config
