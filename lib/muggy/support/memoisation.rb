@@ -5,7 +5,7 @@ module Muggy
         def included(base)
           base.extend ClassMethods
           base.extend Methods
-          base.include Methods
+          base.send :include, Methods
         end
 
         KeyPrefix = "__muggy_memo_".freeze
@@ -14,7 +14,7 @@ module Muggy
           def memoised(name)
             class_eval <<-EOEVAL
               def #{name}
-                Thread.current[:#{memo_key(key)}] ||= #{name}!
+                Thread.current[:#{memo_key(name)}] ||= #{name}!
               end
             EOEVAL
           end
@@ -25,8 +25,8 @@ module Muggy
             "#{KeyPrefix}#{key}"
           end
 
-          def delete_memoised_value!(key)
-            Thread.current.delete(memo_key(key))
+          def clear_memoised_value!(key)
+            Thread.current[memo_key(key)] = nil
           end
 
           def set_memoised_value!(key,value)

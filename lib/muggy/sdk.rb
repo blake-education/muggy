@@ -3,24 +3,25 @@ require 'aws'
 
 module Muggy
   module Sdk
+    include Muggy::Support::Memoisation
     extend self
 
 
     def reset_services!
-      @auto_scaling = nil
-      @cfn = nil
-      @ec2 = nil
-      @elb = nil
-      @s3 = nil
-
-      @base_config = nil
+      %w{auto_scaling
+        cfn
+        ec2
+        elb
+        s3
+        base_config
+      }.each do |key|
+        clear_memoised_value!(key)
+      end
     end
 
 
 
-    def auto_scaling
-      @auto_scaling ||= auto_scaling!
-    end
+    memoised :auto_scaling
 
     def auto_scaling!
       auto_scaling_for_region(Muggy.region)
@@ -31,9 +32,7 @@ module Muggy
     end
 
 
-    def cfn
-      @cfn ||= cfn!
-    end
+    memoised :cfn
 
     def cfn!
       cfn_for_region(Muggy.region)
@@ -44,9 +43,7 @@ module Muggy
     end
 
 
-    def ec2
-      @ec2 ||= ec2!
-    end
+    memoised :ec2
 
     def ec2!
       ec2_for_region(Muggy.region)
@@ -57,9 +54,7 @@ module Muggy
     end
 
 
-    def elb
-      @elb ||= elb!
-    end
+    memoised :elb
 
     def elb!
       elb_for_region(Muggy.region)
@@ -70,9 +65,7 @@ module Muggy
     end
 
 
-    def s3
-      @s3 ||= s3!
-    end
+    memoised :s3
 
     def s3!
       s3_for_region(Muggy.region)
@@ -89,9 +82,10 @@ module Muggy
     end
 
 
-    def base_config
-      @base_config ||= if Muggy.use_iam?
-                         {credential_provider: AWS::Core::CredentialProviders::EC2Provider.new}
+    memoised :base_config
+    def base_config!
+      if Muggy.use_iam?
+        {credential_provider: AWS::Core::CredentialProviders::EC2Provider.new}
       # try to use .fog
       else
         fog_rc = File.expand_path(ENV['FOG_RC'] || "~/.fog")

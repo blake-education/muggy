@@ -2,16 +2,23 @@ require 'fog'
 
 module Muggy
   module Fog
+    include Muggy::Support::Memoisation
+    extend self
+
     # assumptions: Muggy.use_iam? is defined
 
     # reset service instances.
     # Used to reset memoised values if the global region's changed.
     def reset_services!
+      %w{ iam 
+      }.each do |key|
+        clear_memoised_value!(key)
+      end
+
       @ec2 = nil
       @cfn = nil
       @s3  = nil
       @cw  = nil
-      @iam = nil
       @elb = nil
       @rds = nil
       @r53 = nil
@@ -102,15 +109,12 @@ module Muggy
       @r53 ||= ::Fog::DNS.new(provider: 'AWS', use_iam_profile: Muggy.use_iam?)
     end
 
-    def iam
-      @iam ||= iam!
-    end
 
+    memoised :iam
     def iam!
       ::Fog::AWS::IAM.new()
     end
 
 
-    extend self
   end
 end
