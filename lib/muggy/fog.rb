@@ -10,26 +10,27 @@ module Muggy
     # reset service instances.
     # Used to reset memoised values if the global region's changed.
     def reset_services!
-      %w{ iam 
+      %w{ 
+        auto_scaling
+        cache
+        cfn
+        cw
+        ec2
+        elb
+        iam 
+        rds
+        r53
+        s3
       }.each do |key|
         clear_memoised_value!(key)
       end
-
-      @ec2 = nil
-      @cfn = nil
-      @s3  = nil
-      @cw  = nil
-      @elb = nil
-      @rds = nil
-      @r53 = nil
-      @cache = nil
-      @auto_scaling = nil
     end
 
 
     # services
-    def ec2
-      @ec2 ||= ec2_for_region(Muggy.region)
+    memoised :ec2
+    def ec2!
+      ec2_for_region(Muggy.region)
     end
 
     def ec2_for_region(region)
@@ -37,8 +38,9 @@ module Muggy
     end
 
 
-    def elb
-      @elb ||= elb_for_region(Muggy.region)
+    memoised :elb
+    def elb!
+      elb_for_region(Muggy.region)
     end
 
     def elb_for_region(region)
@@ -46,8 +48,9 @@ module Muggy
     end
 
 
-    def cache
-      @cache ||= cache_for_region(Muggy.region)
+    memoised :cache
+    def cache!
+      cache_for_region(Muggy.region)
     end
 
     def cache_for_region(region)
@@ -55,8 +58,9 @@ module Muggy
     end
 
 
-    def cfn
-      @cfn ||= cfn_for_region(Muggy.region)
+    memoised :cfn
+    def cfn!
+      cfn_for_region(Muggy.region)
     end
 
     def cfn_for_region(region)
@@ -64,8 +68,9 @@ module Muggy
     end
 
 
-    def s3
-      @s3 ||= s3_for_region(Muggy.region)
+    memoised :s3
+    def s3!
+      s3_for_region(Muggy.region)
     end
 
     def s3_for_region(region)
@@ -73,8 +78,9 @@ module Muggy
     end
 
 
-    def cw
-      @cw ||= cloudwatch_for_region(Muggy.region)
+    memoised :cw
+    def cw!
+      cloudwatch_for_region(Muggy.region)
     end
 
     def cloudwatch_for_region(region)
@@ -82,8 +88,9 @@ module Muggy
     end
 
 
-    def rds
-      @rds ||= rds_for_region(Muggy.region)
+    memoised :rds
+    def rds!
+      rds_for_region(Muggy.region)
     end
 
     def rds_for_region(region)
@@ -91,8 +98,9 @@ module Muggy
     end
 
 
-    def auto_scaling
-      @auto_scaling ||= auto_scaling_for_region(Muggy.region)
+    memoised :auto_scaling
+    def auto_scaling!
+      auto_scaling_for_region(Muggy.region)
     end
 
     def auto_scaling_for_region(region)
@@ -105,8 +113,9 @@ module Muggy
     #################
 
 
-    def r53
-      @r53 ||= ::Fog::DNS.new(provider: 'AWS', use_iam_profile: Muggy.use_iam?)
+    memoised :r53
+    def r53!
+      ::Fog::DNS.new(provider: 'AWS', use_iam_profile: Muggy.use_iam?)
     end
 
 
