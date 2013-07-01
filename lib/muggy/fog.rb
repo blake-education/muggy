@@ -103,7 +103,11 @@ module Muggy
     end
 
     def iam
-      @iam ||= ::Fog::AWS::IAM.new()
+      @iam ||= iam!
+    end
+
+    def iam!
+      ::Fog::AWS::IAM.new()
     end
 
 

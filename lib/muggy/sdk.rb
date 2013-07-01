@@ -19,7 +19,11 @@ module Muggy
 
 
     def auto_scaling
-      @auto_scaling ||= auto_scaling_for_region(Muggy.region)
+      @auto_scaling ||= auto_scaling!
+    end
+
+    def auto_scaling!
+      auto_scaling_for_region(Muggy.region)
     end
 
     def auto_scaling_for_region(region)
@@ -28,7 +32,11 @@ module Muggy
 
 
     def cfn
-      @cfn ||= cfn_for_region(Muggy.region)
+      @cfn ||= cfn!
+    end
+
+    def cfn!
+      cfn_for_region(Muggy.region)
     end
 
     def cfn_for_region(region)
@@ -37,7 +45,11 @@ module Muggy
 
 
     def ec2
-      @ec2 ||= ec2_for_region(Muggy.region)
+      @ec2 ||= ec2!
+    end
+
+    def ec2!
+      ec2_for_region(Muggy.region)
     end
 
     def ec2_for_region(region)
@@ -46,7 +58,11 @@ module Muggy
 
 
     def elb
-      @elb ||= elb_for_region(Muggy.region)
+      @elb ||= elb!
+    end
+
+    def elb!
+      elb_for_region(Muggy.region)
     end
 
     def elb_for_region(region)
@@ -54,10 +70,12 @@ module Muggy
     end
 
 
-
-
     def s3
-      @s3 ||= s3_for_region(Muggy.region)
+      @s3 ||= s3!
+    end
+
+    def s3!
+      s3_for_region(Muggy.region)
     end
 
     def s3_for_region(region)
