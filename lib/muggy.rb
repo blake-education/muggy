@@ -44,7 +44,7 @@ module Muggy
   DEFAULT_REGION = REGION_MAP[nil]
 
 
-  def formal_region(region)
+  def formal_region(region=self.region)
     REGION_MAP[region] || region
   end
 
