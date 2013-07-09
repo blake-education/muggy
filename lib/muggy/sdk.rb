@@ -13,6 +13,7 @@ module Muggy
         cloud_watch
         ec2
         elb
+        elasticache
         r53
         s3
         base_config
@@ -85,6 +86,16 @@ module Muggy
 
     def cloud_watch_for_region(region)
       ::AWS::CloudWatch.new(sdk_config(region: Muggy.formal_region(region)))
+    end
+
+
+    memoised :elasticache
+    def elasticache!
+      elasticache_for_region(Muggy.region)
+    end
+
+    def elasticache_for_region(region)
+      ::AWS::Elasticache.new(sdk_config(region: Muggy.formal_region(region)))
     end
 
 
