@@ -108,6 +108,11 @@ module Muggy
   end
 
 
+  def random_availability_zone(region=self.formal_region)
+    availability_zones(region).sample
+  end
+
+
 
 
   def is_ec2?
