@@ -52,6 +52,7 @@ module Muggy
   def region=(region)
     @region = formal_region(region)
     fog.reset_services!
+    sdk.reset_services!
     @region
   end
 
