@@ -16,6 +16,7 @@ module Muggy
         elasticache
         r53
         s3
+        sqs
         base_config
       }.each do |key|
         clear_memoised_value!(key)
@@ -96,6 +97,16 @@ module Muggy
 
     def elasticache_for_region(region)
       ::AWS::Elasticache.new(sdk_config(region: Muggy.formal_region(region)))
+    end
+
+
+    memoised :sqs
+    def sqs!
+      sqs_for_region(Muggy.region)
+    end
+
+    def sqs_for_region(region)
+      ::AWS::SQS.new(sdk_config(region: Muggy.formal_region(region)))
     end
 
 
