@@ -123,7 +123,7 @@ module Muggy
 
 
     def debug!
-      :AWS.config(:log_formatter => AWS::Core::LogFormatter.debug, :logger => Logger.new($stdout), :log_level => :debug)
+      ::AWS.config(:log_formatter => AWS::Core::LogFormatter.debug, :logger => Logger.new($stdout), :log_level => :debug)
     end
 
 
