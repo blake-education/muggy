@@ -76,7 +76,9 @@ module Muggy
     end
 
     def s3_for_region(region)
-      ::AWS::S3.new(sdk_config(region: Muggy.formal_region(region)))
+      formal_region = Muggy.formal_region(region)
+      endpoint = "s3-#{formal_region}.amazonaws.com"
+      ::AWS::S3.new(sdk_config(region: formal_region, s3_endpoint: endpoint))
     end
 
 
