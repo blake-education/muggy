@@ -122,6 +122,9 @@ module Muggy
     end
 
 
+    def debug!
+      :AWS.config(:log_formatter => AWS::Core::LogFormatter.debug, :logger => Logger.new($stdout), :log_level => :debug)
+    end
 
 
     memoised :base_config
