@@ -77,8 +77,13 @@ module Muggy
 
     def s3_for_region(region)
       formal_region = Muggy.formal_region(region)
-      endpoint = "s3-#{formal_region}.amazonaws.com"
-      ::AWS::S3.new(sdk_config(region: formal_region, s3_endpoint: endpoint))
+
+      if formal_region == 'us-east-1'
+        ::AWS::S3.new(sdk_config(region: 'us-east-1'))
+      else
+        endpoint = "s3-#{formal_region}.amazonaws.com"
+        ::AWS::S3.new(sdk_config(region: formal_region, s3_endpoint: endpoint))
+      end
     end
 
 
