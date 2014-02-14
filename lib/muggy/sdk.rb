@@ -87,6 +87,15 @@ module Muggy
       ::AWS::CloudWatch.new(sdk_config(region: Muggy.formal_region(region)))
     end
 
+    memoised :cache
+    def cache!
+      ::AWS::ElastiCache.new(sdk_config())
+    end
+
+
+    def cache_for_region(region)
+      ::AWS::ElastiCache.new(sdk_config(region: Muggy.formal_region(region)))
+    end
 
 
     memoised :r53
