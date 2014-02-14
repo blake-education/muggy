@@ -93,7 +93,7 @@ module Muggy
     memoised :cache
 
     def cache!
-      cache(Muggy.region)
+      cache_for_region(Muggy.region)
     end
 
 
