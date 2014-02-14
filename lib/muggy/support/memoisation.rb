@@ -14,7 +14,7 @@ module Muggy
           def memoised(name)
             class_eval <<-EOEVAL
               def #{name}
-                Thread.current[:#{memo_key(name)}] = #{name}!
+                Thread.current[:#{memo_key(name)}] ||= #{name}!
               end
             EOEVAL
           end
