@@ -88,6 +88,7 @@ module Muggy
 
 
     memoised :cloud_watch
+
     def cloud_watch!
       cloud_watch_for_region(Muggy.region)
     end
