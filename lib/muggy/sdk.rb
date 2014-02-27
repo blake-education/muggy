@@ -103,7 +103,7 @@ module Muggy
     end
 
     def elasticache_for_region(region)
-      ::AWS::Elasticache.new(sdk_config(region: Muggy.formal_region(region)))
+      ::AWS::ElastiCache.new(sdk_config(region: Muggy.formal_region(region)))
     end
 
 
