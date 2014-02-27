@@ -13,9 +13,10 @@ module Muggy
         cloud_watch
         ec2
         elb
-        cache
+        elasticache
         r53
         s3
+        sqs
         base_config
       }.each do |key|
         clear_memoised_value!(key)
@@ -75,7 +76,14 @@ module Muggy
     end
 
     def s3_for_region(region)
-      ::AWS::S3.new(sdk_config(region: Muggy.formal_region(region)))
+      formal_region = Muggy.formal_region(region)
+
+      if formal_region == 'us-east-1'
+        ::AWS::S3.new(sdk_config(region: 'us-east-1'))
+      else
+        endpoint = "s3-#{formal_region}.amazonaws.com"
+        ::AWS::S3.new(sdk_config(region: formal_region, s3_endpoint: endpoint))
+      end
     end
 
 
@@ -90,16 +98,25 @@ module Muggy
     end
 
 
-    memoised :cache
+    memoised :elasticache
+    def elasticache!
+      elasticache_for_region(Muggy.region)
+    end
 
-    def cache!
-      cache_for_region(Muggy.region)
+    def elasticache_for_region(region)
+      ::AWS::Elasticache.new(sdk_config(region: Muggy.formal_region(region)))
     end
 
 
-    def cache_for_region(region)
-      ::AWS::ElastiCache.new(sdk_config(region: Muggy.formal_region(region)))
+    memoised :sqs
+    def sqs!
+      sqs_for_region(Muggy.region)
     end
+
+    def sqs_for_region(region)
+      ::AWS::SQS.new(sdk_config(region: Muggy.formal_region(region)))
+    end
+
 
 
     memoised :r53
@@ -113,6 +130,9 @@ module Muggy
     end
 
 
+    def debug!
+      ::AWS.config(:log_formatter => AWS::Core::LogFormatter.debug, :logger => Logger.new($stdout), :log_level => :debug)
+    end
 
 
     memoised :base_config

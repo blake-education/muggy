@@ -52,6 +52,7 @@ module Muggy
   def region=(region)
     @region = formal_region(region)
     fog.reset_services!
+    sdk.reset_services!
     @region
   end
 
@@ -105,6 +106,11 @@ module Muggy
 
   def availability_zones(region=self.formal_region)
     AVAILABILITY_ZONES[region]
+  end
+
+
+  def random_availability_zone(region=self.formal_region)
+    availability_zones(region).sample
   end
 
 
