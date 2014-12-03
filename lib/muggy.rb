@@ -165,5 +165,10 @@ module Muggy
   end
 
 
+  def fog_rc
+    File.expand_path(ENV['FOG_RC'] || "~/.fog")
+  end
+
+
   extend self
 end

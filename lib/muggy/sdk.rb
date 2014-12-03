@@ -139,10 +139,11 @@ module Muggy
       if Muggy.use_iam?
         {credential_provider: AWS::Core::CredentialProviders::EC2Provider.new}
       # try to use .fog
-      else
-        fog_rc = File.expand_path(ENV['FOG_RC'] || "~/.fog")
-        fog_credentials = YAML.load_file(fog_rc)[:default]
+      elsif Muggy.fog_rc.exist?
+        fog_credentials = YAML.load_file(Muggy.fog_rc)[:default]
         {access_key_id: fog_credentials[:aws_access_key_id], secret_access_key: fog_credentials[:aws_secret_access_key]}
+      else
+        {}
       end
     end
   end
