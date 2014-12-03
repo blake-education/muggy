@@ -166,7 +166,7 @@ module Muggy
 
 
   def fog_rc
-    File.expand_path(ENV['FOG_RC'] || "~/.fog")
+    Pathname(ENV['FOG_RC'] || "~/.fog").expand_path
   end
 
 
