@@ -18,5 +18,5 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
 
   gem.add_dependency 'fog'
-  gem.add_dependency 'aws-sdk'
+  gem.add_dependency 'aws-sdk-v1'
 end
