@@ -38,6 +38,8 @@ module Muggy
     'us-east-1'      => 'us-east-1',
     'us-west-2'      => 'us-west-2',
     'ap-southeast-2' => 'ap-southeast-2',
+    'beijing'        => 'cn-north-1',
+    'cn-north-1'     => 'cn-north-1',
   }
 
 
@@ -80,6 +82,8 @@ module Muggy
     'oregon'             => 'oregon',
     'sydney'             => 'sydney',
     'virginia'           => 'virginia',
+    'beijing'            => 'beijing',
+    'cn-north-1'         => 'beijing',
   }
   def informal_region(region=nil)
     region ||= self.region
@@ -98,7 +102,8 @@ module Muggy
   AVAILABILITY_ZONES = {
     'us-east-1' => ('a'..'e'),
     'us-west-2' => ('a'..'c'),
-    'ap-southeast-2' => ('a'..'b'),
+    'ap-southeast-2' => ('a'..'c'),
+    'cn-north-1' => ('a'..'b'),
   }.inject({}) {|zones,(name,azs)|
     zones[name] = azs.map {|az| "#{name}#{az}"}
     zones
